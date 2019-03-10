@@ -11,11 +11,11 @@ async def handler_game_start(request: web.Request) -> web.Response:
     if 'user_id' not in body:
         return web.Response(status=422)
 
-    game_id = get_available_room()['id'] or create_game_room(datetime.now(), body['user_id'])
+    room = get_available_room() or create_game_room(datetime.now(), body['user_id'])
     return web.json_response(data={
         'user_id': body['user_id'],
-        'game_id': game_id
-    })
+        'game_id': room['id']
+    }, status=202)
 
 
 def create_app():
